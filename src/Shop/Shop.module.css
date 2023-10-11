@@ -1,0 +1,50 @@
+.shopContainer{
+    border: 1px solid black;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.header{
+    font-family: 'Clay3';
+    font-size: 48px;
+}
+
+.filterSortContainer{
+    display: flex;
+    flex-direction: row;
+    width: 90%;
+    border: 1px solid black;
+    justify-content: center;
+}
+
+.buttonContainer{
+    width: 50%;
+    display: flex;
+    justify-content: center;
+}
+
+.button{
+    width: 95%;
+    padding: 15px;
+    font-family: 'Clay3';
+    font-size: 34px;
+    background-image: url('../assets/blue-clay-textured-background-colorful-handmade-creative-art-abstract-style.jpeg');
+    background-size: contain;
+    border-radius: 30px;
+}
+
+.filterSection{
+    border: 1px solid black;
+    display: flex;
+    width: 90%;
+}
+.listingContainer{
+    display: flex;
+    width: 90%;
+    border: 1px solid red;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}

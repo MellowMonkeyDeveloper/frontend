@@ -1,0 +1,84 @@
+.propertyContainer{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.topContainer{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+.headerContainer{
+
+}
+.header{
+
+}
+.arrowContainer{
+
+}
+.arrow{
+
+}
+.propertyInfoContainer{
+    display: flex;
+    width: 90%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.sortButtonContainer{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 90%;
+}
+.sortButton{
+    font-size: 22px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100px;
+    background: none;
+    border: none;
+}
+.sortIcon{
+
+}
+.expandedSortContainer{
+    border: 1px solid red;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+}
+.sortInputsContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    width: 50%;
+    border: 1px solid green;
+    justify-content: flex-end;
+}
+.sortInputContainer{
+    display: flex;
+    width: 50%;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+}
+.sortInput{
+
+}
+.expandedSortButtonContainer{
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.expandedSortButton{
+
+}
