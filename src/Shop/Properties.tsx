@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import PropertyInfo from "./PropertyInfo";
 import {
   CheckBox,
@@ -8,9 +8,11 @@ import {
 import styles from "./Property.module.css";
 import axios from "axios";
 import { Sort } from "@mui/icons-material";
+import { Dispatch } from "react";
 export interface PropertiesProps {
   property: string;
   checkboxName: string;
+  filterProps: Dispatch<SetStateAction<[]>>;
 }
 
 export interface PropertyListProps {
@@ -26,7 +28,7 @@ export interface TraitDataProps {
 
 export default function Properties({
   property,
-  checkboxName,
+  checkboxName, filterProps
 }: PropertiesProps) {
   const sortValuesArray: string[] = ["A-Z", "Z-A", "Traits Low", "Traits High"];
   const [arrow, setArrow] = useState<boolean>(false);
@@ -103,8 +105,9 @@ export default function Properties({
   }, [checkboxValue, checkboxBoolean]);
 
   useEffect(() => {
-    console.log(checkboxArr)
-  }, [checkboxArr])
+    filterProps(checkboxArr)
+    console.log(checkboxArr);
+  }, [checkboxArr]);
 
   return (
     <article className={styles.propertyContainer}>

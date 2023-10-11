@@ -60,7 +60,7 @@ export default function ShopMain() {
         </div>
       </div>
       <div className={styles.filterSection}>
-        {filter && <FilterShop />}
+        {filter && <FilterShop filterProps={} />}
       </div>
       <div className={styles.listingContainer}>
         {listings.map((value) => (

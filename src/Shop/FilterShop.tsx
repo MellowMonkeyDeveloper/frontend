@@ -5,7 +5,14 @@ import axios from "axios";
 import { useEffect } from "react";
 import Properties from "./Properties";
 import { Sort } from "@mui/icons-material";
-export default function FilterShop() {
+import { PropertiesProps } from "./Properties";
+
+
+
+export default function FilterShop({filterProps}: PropertiesProps) {
+
+  
+
   const propertiesArray = [
     "Hat",
     "Body",
@@ -55,10 +62,10 @@ export default function FilterShop() {
             className={styles.propertyInput}
             type="text"
             placeholder="Search Property"
-          />
+          /> 
         </div>
         <div className={styles.propertieslistContainer}>
-          {propertiesArray.map((value) => <Properties checkboxName={value} property={value} />)}
+          {propertiesArray.map((value) => <Properties filterProps={filterProps} checkboxName={value} property={value} />)}
         </div>
       </div>
     </section>
