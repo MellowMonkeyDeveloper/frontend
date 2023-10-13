@@ -10,37 +10,53 @@ export interface ListingArrayProps {
   assetID: string | number;
   collection: "Claypez";
   onSale: boolean;
-  price: string | number
+  price: string | number;
 }
 
 export default function ShopMain() {
   const [listings, setListings] = useState<ListingArrayProps[]>([]);
   const [sort, setSort] = useState<boolean>(false);
-  const [filter, setFilter] = useState<boolean>(false)
-
+  const [filter, setFilter] = useState<boolean>(false);
+  const [filterPropsArray, setFilterPropsArray] = useState<any>([]);
 
   useEffect(() => {
     async function getValues() {
-      axios.get('http://127.0.0.1:8000/shop/api/claypeznfts/')
-      .then(res => setListings(res.data.results))
+      axios
+        .get("http://127.0.0.1:8000/shop/api/claypeznfts/filter/")
+        .then((res) => setListings(res.data.results));
     }
-    getValues()
-  }, [])
+    getValues();
+  }, []);
   useEffect(() => {
-    console.log(listings)
-  }, [listings])
+    const traitsSet = new Set(
+      filterPropsArray.map((value: any) => value.trait)
+    );
+    const firstTrait = traitsSet.values().next().value;
 
-  const handleSort = () => {
+    async function getValues() {
+      axios
+        .get(
+          `http://127.0.0.1:8000/shop/api/claypeznfts/filter/?${firstTrait}=${filterPropsArray[0].value}`
+        )
+        .then((res) => setListings(res.data.results));
+    }
+    getValues();
+  }, [filterPropsArray]);
 
-  }
+  useEffect(() => {
+    console.log(listings);
+    console.log(filterPropsArray);
+  }, [listings, filterPropsArray]);
+
+  const handleSort = () => {};
 
   const handleFilter = () => {
-    if(filter === false){
-      setFilter(true)
-    }else if(filter === true){
-      setFilter(false)
+    if (filter === false) {
+      setFilter(true);
+    } else if (filter === true) {
+      setFilter(false);
     }
-  }
+  };
 
   return (
     <article className={styles.shopContainer}>
@@ -60,12 +76,12 @@ export default function ShopMain() {
         </div>
       </div>
       <div className={styles.filterSection}>
-        {filter && <FilterShop filterProps={} />}
+        {filter && <FilterShop filterArray={setFilterPropsArray} />}
       </div>
       <div className={styles.listingContainer}>
         {listings.map((value) => (
           <ListingCard
-            price={value.onSale ? value.price : 'Not Listed'}
+            price={value.onSale ? value.price : "Not Listed"}
             image={value.image}
             collection={"Claypez"}
             asset={value.assetID}

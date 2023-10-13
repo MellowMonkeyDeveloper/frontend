@@ -30,22 +30,7 @@ export default function ListingCard({
           </h4>
         </div>
         <div className={styles.infoHeaderContainer}>
-          <h5 className={styles.infoHeader}>
-            {price !== "Not Listed" ? (
-              <>
-                <span className={styles.adaImageSpan}>
-                  <img
-                    className={styles.adaImage}
-                    src={ada}
-                    alt="ADA token logo"
-                  />
-                </span>
-                <span className={styles.adaPriceSpan}>{price}</span>
-              </>
-            ) : (
-              <span className={styles.adaPriceSpan}>{price}</span>
-            )}
-          </h5>
+          <button>Preview</button>
         </div>
       </div>
     </div>

@@ -16,7 +16,7 @@ export interface PropertiesProps {
 }
 
 export interface PropertyListProps {
-  value: string;
+  value: string; 
   results: string | number;
 }
 
@@ -36,7 +36,7 @@ export default function Properties({
   const [sort, setSort] = useState<boolean>(true);
   const [sortValue, setSortValue] = useState<string>("");
   const [sendSortValue, setSendSortValue] = useState<string>("");
-  const [checkboxValue, setCheckboxValue] = useState<string>("");
+  const [checkboxValue, setCheckboxValue] = useState<{value: string, trait: string}>({value: 'hi', trait: 'hit'});
   const [checkboxBoolean, setCheckboxBoolean] = useState<boolean>(false);
   const [checkboxArr, setCheckboxArr] = useState<any>([]);
 

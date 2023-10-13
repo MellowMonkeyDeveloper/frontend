@@ -7,7 +7,7 @@ export interface PropertyInfoProps {
   resultNumber: string | number;
   property: string;
   value: string;
-  checkboxChange: Dispatch<SetStateAction<string>>
+  checkboxChange: Dispatch<SetStateAction<{value: string, trait: string}>>
   checkboxBoolean: Dispatch<SetStateAction<boolean>>
 }
 
@@ -15,16 +15,16 @@ export default function PropertyInfo({
   property,
   name,
   value,
-  resultNumber,
+  resultNumber, 
   checkboxChange,
   checkboxBoolean
 }: PropertyInfoProps) {
   const [checkboxArr, setCheckboxArr] = useState<any>([]);
 
   const handleCheckbox = (event: ChangeEvent<HTMLInputElement>) => {
-    const checkboxValue = event.target.value;
+    const checkboxValue = {value: event.target.value, trait: `data__${event.target.name.toLowerCase()}`};
     const isChecked = event.target.checked;
-
+    console.log(event.target.name)
     checkboxChange(checkboxValue)
     checkboxBoolean(isChecked)
   };

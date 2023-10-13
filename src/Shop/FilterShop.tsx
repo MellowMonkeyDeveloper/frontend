@@ -2,14 +2,16 @@ import PropertyInfo from "./PropertyInfo";
 import CloseIcon from "@mui/icons-material/Close";
 import styles from "./FilterShop.module.css";
 import axios from "axios";
-import { useEffect } from "react";
+import { SetStateAction, useEffect, Dispatch } from "react";
 import Properties from "./Properties";
 import { Sort } from "@mui/icons-material";
 import { PropertiesProps } from "./Properties";
 
+interface FilterProps {
+  filterArray: Dispatch<SetStateAction<[]>>
+}
 
-
-export default function FilterShop({filterProps}: PropertiesProps) {
+export default function FilterShop({filterArray}: FilterProps) {
 
   
 
@@ -65,9 +67,9 @@ export default function FilterShop({filterProps}: PropertiesProps) {
           /> 
         </div>
         <div className={styles.propertieslistContainer}>
-          {propertiesArray.map((value) => <Properties filterProps={filterProps} checkboxName={value} property={value} />)}
+          {propertiesArray.map((value) => <Properties filterProps={filterArray} checkboxName={value} property={value} />)}
         </div>
-      </div>
+      </div> 
     </section>
   );
 }
