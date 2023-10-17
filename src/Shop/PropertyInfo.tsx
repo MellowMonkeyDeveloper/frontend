@@ -7,31 +7,32 @@ export interface PropertyInfoProps {
   resultNumber: string | number;
   property: string;
   value: string;
-  checkboxChange: Dispatch<SetStateAction<{value: string, trait: string}>>
+  checked: boolean;
+  checkboxChange: Dispatch<SetStateAction<{value: string, trait: string, checked: boolean}>>
   checkboxBoolean: Dispatch<SetStateAction<boolean>>
 }
 
 export default function PropertyInfo({
   property,
   name,
-  value,
+  value, 
   resultNumber, 
   checkboxChange,
-  checkboxBoolean
+  checkboxBoolean,
+  checked
 }: PropertyInfoProps) {
   const [checkboxArr, setCheckboxArr] = useState<any>([]);
 
   const handleCheckbox = (event: ChangeEvent<HTMLInputElement>) => {
-    const checkboxValue = {value: event.target.value, trait: `data__${event.target.name.toLowerCase()}`};
+    const checkboxValue = {value: event.target.value, trait: `data__${event.target.name.toLowerCase()}`, checked: event.target.checked};
     const isChecked = event.target.checked;
-    console.log(event.target.name)
     checkboxChange(checkboxValue)
     checkboxBoolean(isChecked)
   };
 
   useEffect(() => {
-    console.log(checkboxArr);
-  }, [checkboxArr]);
+    console.log(checked)
+  }, [property, checked])
 
   return (
     <div className={styles.container}>
@@ -42,6 +43,7 @@ export default function PropertyInfo({
           name={name}
           value={value}
           onChange={handleCheckbox}
+          checked={checked}
         />
 
         <h5 className={styles.header}>

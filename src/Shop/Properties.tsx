@@ -12,11 +12,12 @@ import { Dispatch } from "react";
 export interface PropertiesProps {
   property: string;
   checkboxName: string;
-  filterProps: Dispatch<SetStateAction<[]>>;
+  filterProps: Dispatch<SetStateAction<any[]>>;
+  passedDownArray: [];
 }
 
 export interface PropertyListProps {
-  value: string; 
+  value: string;
   results: string | number;
 }
 
@@ -24,11 +25,14 @@ export interface TraitDataProps {
   traitName: string;
   value: string;
   count: number;
+  checked: boolean;
 }
 
 export default function Properties({
   property,
-  checkboxName, filterProps
+  checkboxName,
+  filterProps,
+  passedDownArray,
 }: PropertiesProps) {
   const sortValuesArray: string[] = ["A-Z", "Z-A", "Traits Low", "Traits High"];
   const [arrow, setArrow] = useState<boolean>(false);
@@ -36,9 +40,17 @@ export default function Properties({
   const [sort, setSort] = useState<boolean>(true);
   const [sortValue, setSortValue] = useState<string>("");
   const [sendSortValue, setSendSortValue] = useState<string>("");
-  const [checkboxValue, setCheckboxValue] = useState<{value: string, trait: string}>({value: 'hi', trait: 'hit'});
+  const [checkboxValue, setCheckboxValue] = useState<{
+    value: string;
+    trait: string; 
+    checked: boolean;
+  }>({ value: "null", trait: "null", checked: false });
   const [checkboxBoolean, setCheckboxBoolean] = useState<boolean>(false);
   const [checkboxArr, setCheckboxArr] = useState<any>([]);
+  const [buildCheckboxes, setBuildCheckboxes] = useState<any>();
+
+  /*Anytime the arrow is clicked to expand the checkboxes list a request is s
+  sent to the server and then checked against the passedown array in order to determine which checkboxes should be selected */
 
   const handleArrow = (event: string) => {
     async function getData() {
@@ -46,10 +58,21 @@ export default function Properties({
         .get(
           `http://127.0.0.1:8000/shop/api/claypez_collections/?search=${event}`
         )
-        .then((res) => setPropsArr(res.data));
+        .then((res) =>
+          setPropsArr(
+            res.data.map((value: any) => {
+              const findChecked: any = passedDownArray.find(
+                (item: any) => item.value === value.value
+              );
+              if (findChecked) {
+                return { ...value, checked: findChecked.checked };
+              } else {
+                return { ...value, checked: false };
+              }
+            })
+          )
+        );
     }
-
-    console.log(propsArr);
     if (arrow) {
       setArrow(false);
     } else if (!arrow) {
@@ -66,48 +89,60 @@ export default function Properties({
     }
   };
 
-  const handleSortValue = () => {};
+  /*Sets the props array according to the sort value requested */
 
   useEffect(() => {
     if (sortValue === "A-Z") {
       setPropsArr((prev) =>
         [...prev].sort((a, b) => a.value.localeCompare(b.value))
       );
-      console.log(propsArr);
     } else if (sortValue === "Z-A") {
       setPropsArr((prev) =>
         [...prev].sort((a, b) => b.value.localeCompare(a.value))
       );
-      console.log(propsArr);
     } else if (sortValue === "Traits Low") {
       setPropsArr((prev) => [...prev].sort((a, b) => a.count - b.count));
-      console.log(propsArr);
     } else {
       setPropsArr((prev) => [...prev].sort((a, b) => b.count - a.count));
-      console.log(propsArr);
     }
   }, [sortValue]);
 
+  /*Sets props array anytime more checkboxes are added to array without closing the arrow */
+
   useEffect(() => {
-    setCheckboxArr((prev: any) => {
-      if (prev === undefined) {
-        return [checkboxValue];
-      } else {
-        if (checkboxBoolean) {
-          return [...prev, checkboxValue].filter((value) => value !== Array);
+    setPropsArr((prev: any) =>
+      [...prev].map((value: any) => {
+        const findChecked: any = passedDownArray.find(
+          (item: any) => item.value === value.value
+        );
+        if (findChecked) {
+          return { ...value, checked: findChecked.checked };
         } else {
-          return [...prev, checkboxValue].filter(
-            (value) => value !== checkboxValue
-          );
+          return { ...value, checked: false };
+        }
+      })
+    );
+  }, [passedDownArray]);
+
+  useEffect(() => {
+    filterProps((prev: any) => {
+      if (prev === undefined) {
+        return [];
+      } else {
+        if (checkboxBoolean === true) {
+          return [...prev, checkboxValue];
+        } else {
+          if ([...prev].length > 1) {
+            return [...prev].filter(
+              (value) => value.value !== checkboxValue.value
+            );
+          } else {
+            return [];
+          }
         }
       }
     });
   }, [checkboxValue, checkboxBoolean]);
-
-  useEffect(() => {
-    filterProps(checkboxArr)
-    console.log(checkboxArr);
-  }, [checkboxArr]);
 
   return (
     <article className={styles.propertyContainer}>
@@ -154,6 +189,7 @@ export default function Properties({
           <div className={styles.propertyInfoContainer}>
             {propsArr.map((value: any) => (
               <PropertyInfo
+                checked={value.checked}
                 name={checkboxName}
                 resultNumber={value.count}
                 property={value.value}
